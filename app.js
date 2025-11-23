@@ -1,26 +1,34 @@
-const superheroes = [
-    { alias: "Captain America" },
-    { alias: "Ironman" },
-    { alias: "Spiderman" },
-    { alias: "Captain Marvel" },
-    { alias: "Black Widow" },
-    { alias: "Hulk" },
-    { alias: "Hawkeye" },
-    { alias: "Black Panther" },
-    { alias: "Thor" },
-    { alias: "Scarlett Witch" }
-];
+document.addEventListener('DOMContentLoaded', function() {
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('searchInput');
+    const resultDiv = document.getElementById('result');
 
-const searchBtn = document.getElementById('searchBtn');
-
-searchBtn.addEventListener('click', function() {
-    let heroList = '<ul>\n';
-    
-    superheroes.forEach(function(hero) {
-        heroList += '  <li>' + hero.alias + '</li>\n';
+    searchBtn.addEventListener('click', function() {
+        searchSuperheroes();
     });
-    
-    heroList += '</ul>';
-    
-    alert(heroList);
+
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            searchSuperheroes();
+        }
+    });
+
+    function searchSuperheroes() {
+        // Sanitize input - remove any HTML tags and trim whitespace
+        const query = searchInput.value.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        
+        // Build URL with query parameter
+        const url = `superheroes.php?query=${encodeURIComponent(query)}`;
+        
+        // Make AJAX request
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                resultDiv.innerHTML = data;
+            })
+            .catch(error => {
+                resultDiv.innerHTML = '<p class="error">An error occurred while searching.</p>';
+                console.error('Error:', error);
+            });
+    }
 });
