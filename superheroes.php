@@ -63,10 +63,10 @@ $superheroes = [
   ], 
 ];
 
-// Sanitize the query parameter
+// prevent harmful inputs
 $query = isset($_GET['query']) ? htmlspecialchars(trim($_GET['query']), ENT_QUOTES, 'UTF-8') : '';
 
-// If query is empty, display all superheroes
+// if empty, display all superheroes
 if (empty($query)) {
     echo '<ul>';
     foreach ($superheroes as $superhero) {
@@ -74,7 +74,7 @@ if (empty($query)) {
     }
     echo '</ul>';
 } else {
-    // Search for a specific superhero by name or alias (case-insensitive)
+    // case sensitive search for superhero by name or alias
     $found = false;
     foreach ($superheroes as $superhero) {
         if (strcasecmp($superhero['name'], $query) == 0 || strcasecmp($superhero['alias'], $query) == 0) {
@@ -86,7 +86,7 @@ if (empty($query)) {
         }
     }
     
-    // If no superhero found, display error message
+    // error msg if not found
     if (!$found) {
         echo '<p class="error">SUPERHERO NOT FOUND</p>';
     }

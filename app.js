@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function searchSuperheroes() {
-        // Sanitize input - remove any HTML tags and trim whitespace
+        // sanitise
         const query = searchInput.value.trim().replace(/</g, "&lt;").replace(/>/g, "&gt;");
         
-        // Build URL with query parameter
+        //make url
         const url = `superheroes.php?query=${encodeURIComponent(query)}`;
         
-        // Make AJAX request
+        // ajax request
         fetch(url)
             .then(response => response.text())
             .then(data => {
